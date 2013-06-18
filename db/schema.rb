@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121217191254) do
+ActiveRecord::Schema.define(:version => 20121217194903) do
 
   create_table "bidnames", :force => true do |t|
     t.string   "name"
@@ -402,10 +402,10 @@ ActiveRecord::Schema.define(:version => 20121217191254) do
   create_table "worksheets", :force => true do |t|
     t.string   "name"
     t.string   "description"
-    t.string   "attachment_file_name"
-    t.string   "attachment_content_type"
-    t.integer  "attachment_file_size"
-    t.datetime "attachment_updated_at"
+    t.string   "sheet_file_name"
+    t.string   "sheet_content_type"
+    t.integer  "sheet_file_size"
+    t.datetime "sheet_updated_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
