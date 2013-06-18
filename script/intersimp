@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+
+require 'ruby-debug'
+
+RAILS_ENV = 'production'
+require File.dirname(__FILE__) + '/../config/environment'
+
+
+stus = IO.readlines("old_inters.txt")
+
+
+  for stu in stus
+      stu.chomp!
+      stu = stu.to_i
+      if student = Student.find_by_number(stu)
+      student.intersession= true
+      student.save
+      else
+          puts "#{stu.to_s}"
+      end
+      
+  end

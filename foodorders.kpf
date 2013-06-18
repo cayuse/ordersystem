@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Komodo Project File - DO NOT EDIT -->
+<project id="6f0edd59-c80a-4e38-bfff-1ab5531a1812" kpf_version="4" name="foodorders.kpf">
+<preference-set idref="6f0edd59-c80a-4e38-bfff-1ab5531a1812">
+  <boolean id="import_live">1</boolean>
+</preference-set>
+</project>

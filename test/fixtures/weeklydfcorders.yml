@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  weeklyorderreq: 
+  site: 
+  item: 
+  monqty: 1
+  tueqty: 1
+  wedqty: 1
+  thuqty: 1
+  friqty: 1
+
+two:
+  weeklyorderreq: 
+  site: 
+  item: 
+  monqty: 1
+  tueqty: 1
+  wedqty: 1
+  thuqty: 1
+  friqty: 1

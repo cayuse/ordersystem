@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  category: 
+  name: 
+  codenum: 
+  search: MyText
+
+two:
+  category: 
+  name: 
+  codenum: 
+  search: MyText

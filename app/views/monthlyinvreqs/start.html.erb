@@ -1,0 +1,16 @@
+<h1>Select Site Type and Weekday</h1>
+    <div id=rest_of_form; class="">
+<% form_tag :controller=>'monthlyinvreqs', :action=>'new' do -%>
+
+  <p>
+    Sitetype:<br />
+    <%= collection_select :monthlyinvreq, :sitetype_id, Sitetype.all, :id, :name %>
+  </p>
+  <p>
+    Weekday:<br />
+    <%= calendar_box :monthlyinvreq, :month %>
+  </p>
+    <p><%= submit_tag "Continue" %> </p>
+<% end %>
+  </div>
+<%= link_to 'Back', monthlyinvreqs_path %>

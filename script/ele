@@ -1,0 +1,300 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'ruby-debug'
+require 'fastercsv'
+
+RAILS_ENV = 'production'
+require File.dirname("/var/www/ordersystem/script") + '/config/environment'
+
+
+sitenums = {
+    5    => 71,
+    105  => 71,
+    6    => 72,
+    106  => 72,
+    7    => 73,
+    107  => 73,
+    8    => 74,
+    108  => 74,
+    9    => 75,
+    109  => 75,
+    10   => 76,
+    110  => 76,
+    11   => 77,
+    111  => 77,
+    26   => 70,
+    126  => 70,
+    12   => 78,
+    112  => 78,
+    13   => 79,
+    113  => 79,
+    14   => 80,
+    114  => 80,
+    15   => 81,
+    115  => 81,
+    16   => 82,
+    116  => 82,
+    17   => 83,
+    117  => 83,
+    18   => 84,
+    118  => 84,
+    19   => 85,
+    119  => 85,
+    20   => 86,
+    120  => 86,
+    21   => 87,
+    121  => 87,
+    22   => 88,
+    122  => 88,
+    23   => 89,
+    123  => 89,
+    24   => 90,
+    124  => 90,
+    25   => 91,
+    125  => 91,
+    27   => 29,
+    127  => 29,
+    28   => 92,
+    128  => 92,
+    29   => 93,
+    129  => 93
+  }
+
+"023","40066998","ESPINOZA","KIMBERLY","00","E","HERNANDEZ JUAN CARLOS","700","01","20060315      ","JULIAN ESPINOZA","308 E JULIANNA ST #B","ANAHEIM ","92801","7144712248"
+"023","40063474","FELTENBERG","MARLAYNA","06","E","HERNANDEZ RAY","700","00","20000527      ","MARK FELTENBERG","1122 W CHATEAU AV","ANAHEIM ","92802","7144227582"
+
+fixTeach = {
+  "HERNANDEZ JUAN CARLOS"=> "HERNAJ",
+  "HERNANDEZ RAY"        => "HERNAR",
+  "LOMBARDO JEANNE"      => "LOMBA3",
+  "LOMBARDO JODI"        => "LOMBA1",
+  "GARCIA ANG ANGELITA"  => "GARCI1",
+  "GARCIA ARE ARELI"     => "GARCI2",
+  "TURRIETTA K KELLY"    => "TURRIK",
+  "TURRIETTA T TRACIE"   => "TURRIT",
+  "GUERRERO O OLIVIA"    => "GUERRO",
+  "GUERREROP PATRICIA"   => "GUERRP",
+  "MONTGOMERY R RANDY"   => "MONT_R",
+  "MONTGOMERY K KRISTIN" => "MONT_K",
+  "MONTGOMERY RANDY"     => "MONT_R",
+  "MONTGOMERY KRISTIN"   => "MONT_K",
+  "GARCIA M MONICA"      => "GARCIM",
+  "GARCIA Z ZOE"         => "GARCIZ",
+  "GARCIA D DONNA"       => "GARCID",
+  "GARCIA S SUSANA"      => "GARCIS",
+  "GARCIA MONICA"        => "GARCIM",
+  "GARCIA ZOE"           => "GARCIZ",
+  "GARCIA DONNA"         => "GARCID",
+  "GARCIA SUSANA"        => "GARCIS",
+  "TAYLOR C CYNTHIA"     => "CTAYLO",
+  "TAYLOR J JILL"        => "JTAYLO",
+  "TAYLOR CYNTHIA"       => "CTAYLO",
+  "TAYLOR JILL"          => "JTAYLO",
+  "DOUGHERTYS"           => "SDOUGH",
+  "DOUGHERTY S BECKY"    => "SDOUGH",
+  "DOUGHERTY BECKY"      => "SDOUGH",
+  "MARTINEZ N NORMA"     => "NMARTI",
+  "MARTINEZ E ELIZABETH" => "EMARTI",
+  "MARTINEZ NORMA"       => "NMARTI",
+  "MARTINEZ ELIZABETH"   => "EMARTI",
+  "TORRES M MONJA"       => "MTORRE",
+  "TORRES MONJA"         => "MTORRE",
+  "NICHOLLJOHNSON CAROLYN" => "NICHOJ"
+  }
+
+
+#create a hash of all the students in the database, to find students this 1/2s the database hits
+studentNumbers = {}
+#studentNumbers = Student.all.collect(&:number)
+allstus = Student.all
+allstus.each{ |s| studentNumbers[s.number.to_i]=s }
+off_cal = TrackCalendar.last :order=>"start", :conditions=>["start <= ?", Date.today+2.day]
+offtrack = off_cal.track ? off_cal.track.code : "none"
+
+stus = FasterCSV.read("/home/shared/ACSDin.txt")
+
+    if stus.length < 15000
+        puts "short acsd file"
+        quit
+    end
+
+file = File.open("/home/shared/acsd.txt", "wb")
+
+
+#=> "\"005\",\"40016892\",\"Quarterman\",\"Dominique\",\"05\",\"E\",\"Chaney\",\"600\",\"00\",\"19981002\",\"M/ Bennett\",\"1744 W Juno Av #A\",\"Anaheim \",\"92804\",\"7143128704\"\r\n"
+
+iterator = 1
+  for stu in stus
+  begin
+    stu.each do |stupiece|
+        stupiece.gsub!("`","")
+        stupiece.gsub!("'",""  )
+        stupiece.gsub!(",","#")
+        stupiece.gsub!("\"","")
+        stupiece.gsub!("("," ")
+        stupiece.gsub!(")"," ")
+        stupiece.gsub!("/", " ")
+        stupiece.gsub!("\\"," ")
+        stupiece.gsub!(":"," ")
+        stupiece.gsub!("*"," ")
+        stupiece.gsub!("M M ","")
+        stupiece.gsub!(/\361/, "n")
+        stupiece.gsub!(/^ /,"")
+        stupiece.upcase!
+    end
+    (schoolNumber, studentNumber,    lName,
+    fName,        grade,            track,
+    homeRoom,     ethnicCodeNumber, languageNumber,
+    revBirthDate, parentName,       streetAddress,
+    city,         zipCode,          unkHomePhone) = stu
+
+    next if schoolNumber == "800"
+
+    #Add Defaults
+    state             = "CA"
+    fileNumber        = ""
+    frp               = ""
+    specialEd         = ""
+    ssn               = ""
+    dateRecordCreated = ""
+    recordNumber      = ""
+    dateEntered       = ""
+    dropDate          = ""
+    fosterChild       = ""
+    foodStamps        = ""
+    workPhone         = ""
+    pin               = ""
+
+    #fix School Number
+    schoolNumber = sitenums[schoolNumber.to_i] || "999"
+    #fix Teachers
+    if ( schoolNumber == 89 and homeRoom == "BARRETT" )
+        rawGrade = grade;
+        rawGrade.gsub!("0O","K")
+        rawGrade.gsub!("0","")
+        homeRoom = "#{rawGrade}#{homeRoom}"
+    end
+
+    #fix teachers
+    homeRoom.gsub!(/ /,"_")
+    homeRoom.gsub!(/\W/,"")
+    homeRoom.gsub!(/_/," ")
+    homeRoom.gsub!("#","")
+    if ( fixTeach.keys.include?(homeRoom) )
+      homeRoom = fixTeach[homeRoom]
+    end
+
+    homeRoom.gsub!(" ","")
+
+    #fix language Numbers
+    if ( languageNumber == "01" )
+      languageNumber = "02"
+    else
+      languageNumber = "01"
+    end
+
+    #fix ethnic codes
+    if ( ethnicCodeNumber == "500" )
+      ethnicCode = "05";    #hispanic
+    elsif ( ethnicCodeNumber == "399" )
+      ethnicCode = "03";    #Pacific Islander
+    elsif (ethnicCodeNumber == "600" )
+      ethnicCode = "06";    #Black
+    elsif ( ethnicCodeNumber == "400" )
+      $ethnicCode = "04";    #Filipino
+    elsif ( ethnicCodeNumber == "100" )
+      ethnicCode = "01";    #American Indian
+    else
+      $ethnicCode = "00";    #Unknown
+    end
+
+    #fix birthday
+    if revBirthDate
+        (year, date) = revBirthDate.unpack('a4a4')
+        birthDay = "#{date}#{year}"
+    else
+        birthDay = "00000000"
+    end
+
+    #Fix Phone Number
+    if unkHomePhone.instance_of?(String)
+    unkHomePhone.gsub!("-","")
+    unkHomePhone = "714#{unkHomePhone}"
+    homePhone = unkHomePhone[-10,10] || "0000000000"
+    else
+        homePhone = "0000000000"
+    end
+
+
+    #fix zip
+    if zipCode.instance_of?(String)
+        zipCode.gsub!("-","")
+    end
+
+    #Fix Parent Name
+    if parentName.instance_of?(String)
+        parentName.gsub!("MM","")
+    end
+
+    fullName = "#{lName}, #{fName}"
+
+    #=> Student(id: integer, number: integer, name: string, homeroom: string,
+                #grade: integer, track: string, intersession: boolean,
+                #site_id: integer, created_at: datetime, updated_at: datetime)
+
+    #pull studend data from the download in progress
+    studentData = {:number=>studentNumber.to_i, :name=>fullName, :homeroom=>homeRoom, :grade=>grade.to_i, :track=>track, :site_id=>schoolNumber}
+    #find student record or make new one
+    student = studentNumbers[studentNumber.to_i] || Student.new(studentData)
+
+    ## automatically remove student from intersession if student track changes for any reason
+    if student.id
+        if student.track != studentData[:track]
+            studentData[:intersession] = false
+        end
+      student.update_attributes(studentData)
+      if (student.intersession && track == offtrack)
+          track = "I"
+          homeRoom = "INTERS"
+      end
+    else
+      student.intersession = false
+    end
+
+    #save student.
+    student.save
+    #remove number from array of numbers in DB used later to destroy stale records.
+    studentNumbers.delete(studentNumber.to_i)
+
+
+    #here for debug purposes.. uncomment the following lines to find problem children
+    #iterator += 1
+    #if (iterator > 12349 and iterator < 12365)
+    #    debugger
+    #end
+
+    #if (iterator%10 == 0)
+    #    puts "#{iterator} stunum #{studentNumber}"
+    #end
+
+    file.printf("%-9s%09d%-24s%-03d%-6s%-2s%-2s%-2s%-2s%-1s%-2s%-9s%-8s%-8s%-7s%-8s%-8s%-26s%-1s%-13s%-30s%-15s%-2s%-9s%-10s%-10s%-6s\015\012",
+          fileNumber, studentNumber, fullName[0, 24],
+          schoolNumber, homeRoom[0, 6], track, grade, ethnicCode,
+          languageNumber, frp, specialEd, ssn, birthDay,
+          dateRecordCreated, recordNumber, dateEntered, dropDate,
+          parentName[0, 24], fosterChild, foodStamps,
+          streetAddress[0, 30], city[0, 15], state,
+          zipCode, homePhone, workPhone, pin)
+
+rescue
+    puts stu
+    raise
+end
+end
+
+
+    studentNumbers.values.each do |astu|
+        puts "Dropping #{astu.number}"
+        astu.destroy
+    end

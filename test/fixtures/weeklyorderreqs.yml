@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  sitetype_id: 
+  keydate: 2009-01-13
+  due: 2009-01-13
+  finalized: false
+
+two:
+  sitetype_id: 
+  keydate: 2009-01-13
+  due: 2009-01-13
+  finalized: false

@@ -1,0 +1,28 @@
+<%= stylesheet_link_tag 'SpryCollapsiblePanel' %>
+<%= javascript_include_tag 'SpryCollapsiblePanel' %>
+
+<% form_tag items_path, :method => 'get' do %>
+  <p>
+    <%= text_field_tag :search, params[:search] %>
+    <%= submit_tag "Search", :name => nil %>
+  </p>
+<% end %>
+
+<br>
+<h1>Listing Items</h1>
+<br>
+  <p>
+    <%= button_to 'New item', new_item_path %>
+  </p>
+  <br>
+  <br>
+
+<% for item in @items %>
+<%= render :partial=>'item', :locals=>{:item => item, :page => @page} %>
+<% end %>
+
+<br>
+
+<%= will_paginate @items %>
+<br>
+<%= button_to 'New item', new_item_path %>

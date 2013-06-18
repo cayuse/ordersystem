@@ -1,0 +1,17 @@
+<h1>Listing Monthly Order Requests</h1>
+
+<%= will_paginate @months %>
+<br />
+<div id="accordion">
+  <%= render :partial => 'months', :locals => { :months => @months, :monthhash => @monthhash} %>
+</div>
+
+<br />
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#accordion").accordion({ header: "h3" });
+  $("#accordion").accordion('activate' , <%= (@months.index(Date.today.monday)).to_i -%>);
+});
+</script>

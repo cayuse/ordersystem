@@ -1,0 +1,66 @@
+<%= stylesheet_link_tag 'SpryCollapsiblePanel' %>
+<%= javascript_include_tag 'SpryCollapsiblePanel' %>
+
+<h1>Editing Monthly Inventory for <%=h @monthlyinv.monthlyinvreq.month.strftime("%B-%y")%></h1>
+<% form_for :monthlyinv, :url=>monthlyinv_path(@monthlyinv), :html=>{:method=>:put} do |f| %>
+<div id="tabs">
+  <ul>
+    <% @storelocs.each_with_index do |loc, idx| %>
+      <li><a href="#tabs-<%= idx -%>"><%= loc.name -%></a></li>
+    <% end -%>
+    <% if @monthlyinv_hash[:leftovers] %>
+      <li><a href="#tabs-leftovers">Items With Erased Location</a></li>
+    <% end -%>
+  </ul>
+      <% @storelocs.each_with_index do |loc, idx| %>
+        <div id="tabs-<%= idx -%>">
+          <% @monthlyinv_hash[loc].each do |monthlyinvitem| %>
+              <%= render :partial => 'item', :locals => {:monthlyinvitem => monthlyinvitem} %>
+            <br>
+          <% end %>
+        </div>
+      <% end %>
+    <% if @monthlyinv_hash[:leftovers] %>
+        <div id="tabs-leftovers">
+          <% @monthlyinv_hash[:leftovers].each do |monthlyinvitem| %>
+            <% fields_for "monthlyinv[leftovers][]", monthlyinvitem do |item_form| %>
+              <%= render :partial => 'item', :locals => {:monthlyinvitem => monthlyinvitem, :item_form => item_form } %>
+            <% end %>
+            <br>
+          <% end %>
+        </div>
+    <% end -%>
+</div>
+
+<%= hidden_field :referred, :referred, :value=>request.referer %>
+<% session[:clickcode] = false %>
+
+<p><%= f.submit "Update", :onclick=>"this.disabled = true; this.value = 'Please Wait...';form.submit()"%> </p>
+
+<% end %>
+<script type="text/javascript">
+  $.fn.dataTableExt.oApi.fnGetHiddenNodes = function ( oSettings )
+  {
+      /* Note the use of a DataTables 'private' function thought the 'oApi' object */
+      var anNodes = this.oApi._fnGetTrNodes( oSettings );
+      var anDisplay = $('tbody tr', oSettings.nTable);
+
+      /* Remove nodes which are being displayed */
+      for ( var i=0 ; i<anDisplay.length ; i++ )
+      {
+          var iIndex = jQuery.inArray( anDisplay[i], anNodes );
+          if ( iIndex != -1 )
+          {
+              anNodes.splice( iIndex, 1 );
+          }
+      }
+
+      /* Fire back the array to the caller */
+      return anNodes;
+  };
+</script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("#tabs").tabs();
+  } );
+</script>

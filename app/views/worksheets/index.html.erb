@@ -1,0 +1,23 @@
+<div class="clear">
+  <% if Goldberg.user.administrator? %>
+<h3><%= link_to 'Add a new Sheet', :controller => 'worksheets', :action => 'new'%></h3>
+    <%end%>
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Worksheets</a></li> 
+  </ul>
+  <div id="tabs-1">
+    <%= render :partial => 'table', :locals => { :worksheets => @worksheets} %>
+  </div>
+<br><br>
+</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#tabs").tabs( {
+    } );
+    $('table.display').dataTable( {
+      "iDisplayLength": 50
+    } );
+} );
+</script>

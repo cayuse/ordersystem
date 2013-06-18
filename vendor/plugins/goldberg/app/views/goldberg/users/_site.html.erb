@@ -1,0 +1,12 @@
+<br>
+  <h2> Sites </h2>
+<table>
+  <p> 
+    <% for site in Site.find(:all, :order=> :sitetype) %>
+      <div>
+        <%= check_box_tag "user[site_ids][]", site.id, @user.site.include?(user) %>
+        <%= site.name %>
+      </div>
+    <% end %>
+  </p>
+</table>

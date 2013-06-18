@@ -1,0 +1,19 @@
+<h1>Listing Monthly Inventory Requests</h1>
+
+<%= will_paginate @months %>
+<br />
+<div id="accordion">
+<%= render :partial => 'months', :locals => { :months => @months, :sitetypes => @sitetypes, :monthlyinvreqs => @monthlyinvreqs} %>
+</div>
+
+<br />
+
+<%= link_to 'Start New Inventory Request', "monthlyinvreqs/start" %>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#accordion").accordion({ header: "h3" });
+  $("#accordion").accordion('activate' , <%= (@months.index(Date.today.monday)).to_i -%>);
+});
+</script>

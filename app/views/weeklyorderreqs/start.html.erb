@@ -1,0 +1,16 @@
+<h1>Select Site Type and Weekday</h1>
+    <div id=rest_of_form; class="">
+<% form_tag :controller=>'weeklyorderreqs', :action=>'new' do -%>
+
+  <p>
+    Sitetype:<br />
+    <%= collection_select :weeklyorderreq, :sitetype_id, Sitetype.all_with_days, :id, :name %>
+  </p>
+  <p>
+    Weekday:<br />
+    <%= calendar_box :weeklyorderreq, :week %>
+  </p>
+    <p><%= submit_tag "Continue" %> </p>
+<% end %>
+  </div>
+<%= link_to 'Back', weeklyorderreqs_path %>

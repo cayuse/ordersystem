@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  units: 1
+  issue: MyString
+  order: 1
+  cost_in_cents: 1
+  price_in_cents: 1
+  start: 2008-12-16 17:33:27
+  stop: 2008-12-16 17:33:27
+
+two:
+  name: MyString
+  units: 1
+  issue: MyString
+  order: 1
+  cost_in_cents: 1
+  price_in_cents: 1
+  start: 2008-12-16 17:33:27
+  stop: 2008-12-16 17:33:27

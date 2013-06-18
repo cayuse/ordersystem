@@ -1,0 +1,24 @@
+<div class="clear">
+<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Vendors</a></li>
+    <li><a href="#tabs-2">Sheets</a></li>
+  </ul>
+  <div id="tabs-1">
+    <%= render :partial => 'vendors', :locals => { :foodvendors => @foodvendors} %>
+  </div>
+  <div id="tabs-2">
+    <%= render :partial => 'sheets', :locals => { :nutritionals => @nutritionals} %>
+  </div>
+<br><br>
+</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+    $("#tabs").tabs( {
+    } );
+    $('table.display').dataTable( {
+      "iDisplayLength": 50
+    } );
+} );
+</script>

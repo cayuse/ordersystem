@@ -1,0 +1,71 @@
+<h1>New item</h1>
+
+<% form_for(@item) do |f| %>
+  <%= f.error_messages %>
+<table>
+  <td width=40%>
+    <p>
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </p>
+    <p>
+      Units Per<br />
+      <%= f.text_field :units %>
+    </p>
+    <p>
+      Unit of issue<br />
+      <%= f.text_field :issue %>
+    </p>
+  
+    <p><h2>Pricing Information</h2></p>
+    <br />
+    <p>
+      Cost:<br />
+      <%= text_field 'price', 'cost' %>
+    </p>
+    <p>
+      Price:<br />
+      <%= text_field 'price', 'price' %>
+    </p>
+    <p>
+      New Fair Market Value:<br />
+      <%= text_field 'price', 'fmv' %>
+    </p>
+    <p>
+      Effective date:<br />
+      <%= calendar_box 'price', 'start' %>
+    </p>
+
+    <br>
+    <%= f.submit "Create" %>
+  </td>
+  <td width=30%>
+    <p>
+      <br>
+        Available To Sites by Type:
+      <% for sitetype in Sitetype.find(:all) %>
+        <div>
+          <%= check_box_tag "item[sitetype_ids][]", sitetype.id,
+            @item.sitetypes.include?(sitetype) %>
+          <%= sitetype.name %>
+        </div>
+      <% end %>
+    </p>
+    <br>
+    <p>
+      Select days item is available (Only required for DFC Order Items)
+    </p>
+    <p>
+      Mon: <%= f.check_box :mon, :checked=>true %>
+      Tue: <%= f.check_box :tue, :checked=>true %>
+      Wed: <%= f.check_box :wed, :checked=>true %>
+      Thu: <%= f.check_box :thu, :checked=>true %>
+      Fri: <%= f.check_box :fri, :checked=>true %>
+    </p>
+    <p>
+      Order/Inventory Type:
+      <%= collection_select :item, :itemtype_id, Itemtype.find(:all), :id, :name, {:include_blank => true} %>
+    </p>
+  </td>
+<% end %>
+</table>

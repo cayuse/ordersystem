@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  sitetype: 
+  month: 2009-01-27
+  due: 2009-01-27
+
+two:
+  sitetype: 
+  month: 2009-01-27
+  due: 2009-01-27

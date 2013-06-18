@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  item_id: 1
+  start: 2008-12-18
+  expire: 2008-12-18
+  price_in_cents: 1
+  cost_in_cents: 1
+
+two:
+  item_id: 1
+  start: 2008-12-18
+  expire: 2008-12-18
+  price_in_cents: 1
+  cost_in_cents: 1

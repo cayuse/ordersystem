@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  track: 
+  start: 2009-02-25
+  end: 2009-02-25
+
+two:
+  track: 
+  start: 2009-02-25
+  end: 2009-02-25

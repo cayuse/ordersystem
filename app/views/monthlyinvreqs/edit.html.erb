@@ -1,0 +1,26 @@
+<h1>Editing monthlyinvreq</h1>
+
+<% form_for(@monthlyinvreq) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :sitetype %><br />
+    <%= @monthlyinvreq.sitetype.name %>
+  </p>
+  <p>
+    <%= f.label :month %><br />
+  </p>
+    Start Date:<br />
+    <%= calendar_box :monthlyinvreq, :start %>
+  </p>
+  <p>
+    Due Date:<br />
+    <%= calendar_box :monthlyinvreq, :due %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @monthlyinvreq %> |
+<%= link_to 'Back', monthlyinvreqs_path %>

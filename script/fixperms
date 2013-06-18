@@ -1,0 +1,5 @@
+#!/bin/sh -e
+
+find . -exec chown www-data:adm {} \;
+find . -exec chmod 2770 {} \;
+

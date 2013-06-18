@@ -1,0 +1,43 @@
+<h1>Editing weeklyorderreq</h1>
+
+<% form_for(@weeklyorderreq) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :sitetype_id %><br />
+    <%= collection_select :weeklyorderreq, :sitetype_id, Sitetype.all_with_days, :id, :name %>
+  </p>
+  <p>
+    <%= f.label :due %><br />
+    <%= calendar_box :weeklyorderreq, :due %>
+  </p>
+    <p>
+    Order days This Week.
+  </p>
+    <p>
+    <table width=50%>
+      <tr>
+      <th width=10%>Mon: <%= @weeklyorderreq.week%></th>
+      <th width=10%>Tue: <%= @weeklyorderreq.week + 1.day %></th>
+      <th width=10%>Wed: <%= @weeklyorderreq.week + 2.days %></th>
+      <th width=10%>Thu: <%= @weeklyorderreq.week + 3.days %></th>
+      <th width=10%>Fri: <%= @weeklyorderreq.week + 4.days %></th>
+      </tr>
+      <tr>
+    <td align=center><%= f.check_box :mon, :checked=>@weeklyorderreq.mon %></td>
+    <td align=center><%= f.check_box :tue, :checked=>@weeklyorderreq.tue %></td>
+    <td align=center><%= f.check_box :wed, :checked=>@weeklyorderreq.wed %></td>
+    <td align=center><%= f.check_box :thu, :checked=>@weeklyorderreq.thu %></td>
+    <td align=center><%= f.check_box :fri, :checked=>@weeklyorderreq.fri %></td>
+    </tr>
+    </table>
+    <%#= hidden_field :weeklyorderreq, :sitetype_id, :value=>@sitetype.id %>
+    <%#= hidden_field :weeklyorderreq, :week, :value=>@date %>
+    <%#= hidden_field :weeklyorderreq, :finalized, :value=>false %>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @weeklyorderreq %> |
+<%= link_to 'Back', weeklyorderreqs_path %>

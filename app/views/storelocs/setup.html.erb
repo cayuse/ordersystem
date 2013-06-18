@@ -1,0 +1,77 @@
+<link href="/stylesheets/style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/javascripts/drag.js"></script>
+<h1><%= h @site.name %>'s inventory storage Locations</h1>
+<h2>You can drag these locations to set their order</h2>
+<br>
+
+<% Itemtype.find(Monthlyinvreq::VALID_ITEM_TYPES).each do |itype| %>
+  <%= button_to_remote itype.name, :url => {:action => "setup", :search => itype.id, :format => :js}, :method => :get%> &nbsp;
+<% end %>
+<br>&nbsp;<br>
+<% form_remote_tag :url => "/storelocs/setup" do %>
+  <%= text_field_tag :find, params[:find] %>
+  <button class="btn" title="Submit Search">Search</button>
+<% end %>
+
+<br>
+
+<%= javascript_include_tag 'drag' %>
+ <% form_tag :controller => :storelocs, :action => :update_itemlocs do %>
+ <p><%= submit_tag "Save", :name => "submit" %></p>
+<div id="drag">
+  <table id="table1" style= background-color: #777; height: 20px;" border="1" cellpadding="2" cellspacing="1">
+      <tr>
+        <td class="trash" title="Trash">Trash</td>
+      <% @storelocs.each do |storeloc| %>
+          <td class="mark"><%= link_to storeloc.name, edit_storeloc_path(storeloc) %><%= hidden_field_tag storeloc.id, storeloc.id %></td>
+      <% end %>
+      </tr>
+      <tr style="background-color: #eee">
+      <% @storeTemp.each_with_index do |items, idx| %>
+        <% if idx == 0 %>
+        <td class = "single">
+          <div id="replaceable">
+          <% items.each do |item| %>
+          <div id="<%= item.id%>" class="drag t3 clone"><%= hidden_field_tag("index[none][]", item.id , :class=>'song') -%><%= item.name %></div>
+          <%end %>
+          </div>
+        </td>
+        <% else %>
+        <td>
+          <% items.each do |item| %>
+          <div id="<%= item.id%>" class="drag t1"><%= hidden_field_tag("index[#{@storelocs[idx-1].id}][]", item.id , :class=>'song') -%><%= item.name %></div>
+          <% end %>
+        </td>
+        <% end %>
+      <% end %>
+      </tr>
+    </table>
+  <br>
+  <%= submit_tag "Save", :name => "submit" %>
+<% end %>
+</div>
+<br><br>
+
+<!-- <%= link_to 'New Storage Location', new_storeloc_path %>
+
+-->
+<script type="text/javascript">
+  window.onload = function () {
+    var rd = REDIPS.drag;
+    rd.init();
+				rd.myhandler_dropped    = function () {
+					// define current row and current cell
+					var ri = REDIPS.drag.current_cell.parentNode.rowIndex,
+						ci = REDIPS.drag.current_cell.cellIndex,
+                                                tc = REDIPS.drag.top_cell.childNodes[1].name;
+                                        //rd.obj.innerHTML += 'd';
+                                        //console.log(rd.obj.childNodes[0]);
+                                        //console.log(REDIPS.drag.current_cell.parentNode);
+                                        rd.obj.childNodes[0].name = 'index' + '[' + tc + ']' + '[]';
+                                        //console.log(rd.obj.childNodes[0]);
+					// display current row and current cell
+                                        //REDIPS.drag.current_cell.innerHTML = 'Changed: ' + ri + ' ' + ci;
+                                //	document.getElementById('message').innerHTML = 'Changed: ' + ri + ' ' + ci;
+				}
+  }
+</script>

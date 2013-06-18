@@ -1,0 +1,41 @@
+  <% fields_for "monthlyinv[#{monthlyinvitem.qty ? "existing" : "new"}_monthlyinvitem_attributes][]", monthlyinvitem do |item_form| %>
+  <%= item_form.hidden_field :price_id, :value => monthlyinvitem.price.id %>
+  <%= item_form.hidden_field :item_id, :value => monthlyinvitem.item.id %>
+  <%= item_form.hidden_field :storeloc_id, :value => monthlyinvitem.storeloc_id %>
+    <div id="CollapsiblePanel<%= "#{monthlyinvitem.item_id.to_s + "_" + monthlyinvitem.storeloc_id.to_i.to_s}" %>" class="CollapsiblePanel" style="width: 60%;">
+      <div class="cssTitle5"
+                onmouseover="this.className='cssTitle2'"
+                onmouseout="this.className='cssTitle5'"
+                tabindex="<%= "#{monthlyinvitem.item_id.to_s + "_" + monthlyinvitem.storeloc_id.to_i.to_s}" %>"><%=h monthlyinvitem.item.name %>
+      </div>
+      <div class="CollapsiblePanelContent">
+        <table style="text-align: center; height: 20px;" border="1" cellpadding="2" cellspacing="1">
+          <tbody>
+              <tr>
+                <th width="5%" class="cssTitle6">Units</th>
+                <th width="5%" class="cssTitle6">Issue</th>
+                <th width="5%" class="cssTitle6">Cost</th>
+                <th width="5%" class="cssTitle6">Price</th>
+              </tr>
+            <tr>
+              <td class="cssWeeks1"><%=h monthlyinvitem.item.units %></td>
+              <td class="cssWeeks1"><%=h monthlyinvitem.item.issue %></td>
+              <td class="cssWeeks1"><%=h number_to_currency(monthlyinvitem.item.price_on_date(monthlyinvitem.monthlyinv.monthlyinvreq.month).cost) %></td>
+              <td class="cssWeeks1"><%=h number_to_currency(monthlyinvitem.item.price_on_date(monthlyinvitem.monthlyinv.monthlyinvreq.month).price) %></td>
+            </tr>
+            <tr>
+                <td class="cssToday1" colspan="2">
+              Quantity on hand decimal value: </td>
+                <td class="cssToday1" colspan="2"> <%= item_form.text_field :qty %>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+<% end -%>
+    <script type="text/javascript">
+      <!--
+      var CollapsiblePanel<%= "#{monthlyinvitem.item_id.to_s + "_" + monthlyinvitem.storeloc_id.to_i.to_s}" %> = new Spry.Widget.CollapsiblePanel("CollapsiblePanel<%= "#{monthlyinvitem.item_id.to_s + "_" + monthlyinvitem.storeloc_id.to_i.to_s}" %>",{contentIsOpen:<%= monthlyinvitem.qty.to_f > 0.0 ? "true" : "false" %>});
+      //-->
+    </script>

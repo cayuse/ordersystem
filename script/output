@@ -1,0 +1,41 @@
+#!/usr/bin/env ruby
+
+require 'ruby-debug'
+require 'prawn'
+require 'prawn/layout'
+
+RAILS_ENV = 'development'
+require File.dirname(__FILE__) + '/../config/environment'
+
+
+wdfcorder = 19
+
+data = Orderitem.find_all_by_weeklydfcorder_id(wdfcorder, :include=>:item).collect{ |b| [b.item.name, b.monqty, b.tueqty, b.wedqty, b.thuqty, b.friqty]}
+site = Site.find(2)
+
+  
+Prawn::Document.generate("fancy_table.pdf") do
+  
+    font("Courier")
+    font_size(10)
+    bounding_box [5,700], :width => 500 do
+    text "Anaheim Union High School District           #{site.name}\n
+Weekly Order Confirmation                    Generated: #{Time.now}"
+    #stroke do
+    #  line bounds.top_left,    bounds.top_right
+    #  line bounds.bottom_left, bounds.bottom_right
+    #end
+  
+  table data,
+    :font               => "Courier",
+    :font_size          => 8,
+    :position           => [10, 20],
+    :headers            => ["Item Description", "Monday", "Teusday", "Wednesday", "Thursday", "Friday"],
+    :column_widths      => { 0=>200, 1=>70, 2=>70, 3=>70, 4=>70, 5=>70 },
+    :row_colors         => ["ffffff","A0A0A0"],
+    :vertical_padding   => 5,
+    :horizontal_padding => 3
+  end
+
+end
+  

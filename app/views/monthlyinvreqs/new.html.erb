@@ -1,0 +1,21 @@
+<h1><%= @sitetype.name %> Monthly Inventory Request for Month of <%=h @date %></h1>
+
+<% form_for(@monthlyinvreq) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    Start Date:<br />
+    <%= calendar_box :monthlyinvreq, :start, :value=>(@date.end_of_month - 1.week)%>
+  </p>
+  <p>
+    Due Date:<br />
+    <%= calendar_box :monthlyinvreq, :due, :value=>(@date.end_of_month + 1.week)%>
+  </p>
+  <%= hidden_field :monthlyinvreq, :sitetype_id, :value=>@sitetype.id %>
+  <%= hidden_field :monthlyinvreq, :month, :value=>@date %>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', monthlyinvreqs_path %>

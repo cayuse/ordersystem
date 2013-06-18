@@ -1,0 +1,45 @@
+<div>
+  <div>
+    <ul>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+      <%= f.label :contact %>
+      <%= f.text_field :contact %>
+    </ul>
+    <ul>
+      <%= f.label :addr1 %>
+      <%= f.text_field :addr1 %>
+      <%= f.label :addr2 %>
+      <%= f.text_field :addr2 %>
+    </ul>
+    <ul>
+      <%= f.label :city %>
+      <%= f.text_field :city %>
+      State
+      <%= f.text_field :st %>
+      <%= f.label :zip %>
+      <%= f.text_field :zip %>
+    </ul>
+    <ul>
+      <%= f.label :phone1 %>
+      <%= f.text_field :phone1 %>
+      <%= f.label :phone2 %>
+      <%= f.text_field :phone2 %>
+      <%= f.label :fax %>
+      <%= f.text_field :fax %>
+    </ul>
+    <ul>
+      <%= f.label :email %>
+      <%= f.text_field :email %>
+    </ul>
+  </div>
+      This company would like to recieve the following bids:
+    <% (Bidname.all :order => :name).each do |bidname| %>
+      <div>
+        <%= check_box_tag "company[bidname_ids][]", bidname.id,
+          company.bidnames.include?(bidname) %>
+        <%= bidname.name %>
+      </div>
+    <% end %>
+    <br>
+</div>

@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'ruby-debug'
+
+RAILS_ENV = 'development'
+require File.dirname(__FILE__) + '/../config/environment'
+
+
+ a = Orderitem.report_table(:all, :include=>:item, :conditions=>["weeklydfcorder_id = ?", 19])
+ a.reorder("item.name", "item.units",  "item.issue", "monqty", "tueqty", "wedqty", "thuqty", "friqty")
+
+puts a.as(:pdf)
