@@ -1,3 +1,8 @@
+crontab stuff:
+# */5 * * * * root . [ -x /usr/bin/indexer ] && /usr/bin/indexer --quiet --rotate postdelta threaddelta
+
+
+
 Monthlyinvitem.all.each do |invitem|
 
 p *Monthlyinvitem.find_all_by_price_id(nil)
