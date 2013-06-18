@@ -7,6 +7,7 @@ dropdb --username=cayuse rubyorder_development;
 createdb --username=cayuse rubyorder_development;
 psql --username=cayuse rubyorder_development -f $OF;
 cp $OF db.back;
-svn commit -m "db store";
+echo "Don't Forget to Copy the db file $OF."
+#svn commit -m "db store";
 
 
