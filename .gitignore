@@ -12,3 +12,5 @@ db/sphinx/production/nutritional_core.new.spi
 db/sphinx/production/nutritional_core.new.spk
 db/sphinx/production/nutritional_core.new.spm
 db/sphinx/production/nutritional_core.new.spp
+log/
+db/sphinx/
