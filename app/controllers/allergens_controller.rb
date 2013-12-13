@@ -2,7 +2,7 @@ class AllergensController < ApplicationController
   # GET /allergens
   # GET /allergens.xml
   def index
-    @allergens = Allergen.all, :order => :sort
+    @allergens = Allergen.all :order => :sort
 
     respond_to do |format|
       format.html # index.html.erb
@@ -54,7 +54,6 @@ class AllergensController < ApplicationController
   def update
     @allergen = Allergen.find(params[:id])
 
-    respond_to do |format|
       if @allergen.update_attributes(params[:allergen])
           flash[:note] = 'Allergen was successfully udated.'
           redirect_to allergens_url
@@ -74,4 +73,13 @@ class AllergensController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  def update_order
+    new_index = params[:index]
+    new_index.each_with_index{|entry,i| Allergen.update_all(["sort = ?", i], ["id = ?", entry])}
+    @items = Allergen.all :order => :sort
+    render :action => "index"
+  end
+  
+  
 end

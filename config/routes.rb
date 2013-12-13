@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+  map.connect 'allergens/reorder', :controller => "allergens", :action => "reorder"
   map.resources :allergens
 
   map.resources :worksheets
