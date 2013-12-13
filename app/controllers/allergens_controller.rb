@@ -2,7 +2,7 @@ class AllergensController < ApplicationController
   # GET /allergens
   # GET /allergens.xml
   def index
-    @allergens = Allergen.all
+    @allergens = Allergen.all, :order => :sort
 
     respond_to do |format|
       format.html # index.html.erb
@@ -41,16 +41,11 @@ class AllergensController < ApplicationController
   # POST /allergens.xml
   def create
     @allergen = Allergen.new(params[:allergen])
-
-    respond_to do |format|
-      if @allergen.save
-        flash[:notice] = 'Allergen was successfully created.'
-        format.html { redirect_to(@allergen) }
-        format.xml  { render :xml => @allergen, :status => :created, :location => @allergen }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @allergen.errors, :status => :unprocessable_entity }
-      end
+    if @allergen.save
+      flash[:note] = 'Allergen was successfully created.'
+      redirect_to allergens_url
+    else
+      render :action => "new"
     end
   end
 
@@ -61,13 +56,10 @@ class AllergensController < ApplicationController
 
     respond_to do |format|
       if @allergen.update_attributes(params[:allergen])
-        flash[:notice] = 'Allergen was successfully updated.'
-        format.html { redirect_to(@allergen) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @allergen.errors, :status => :unprocessable_entity }
-      end
+          flash[:note] = 'Allergen was successfully udated.'
+          redirect_to allergens_url
+        else
+          render :action => "edit"
     end
   end
 
