@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :allergens
+
   map.resources :worksheets
 
   map.resources :companies
