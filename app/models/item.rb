@@ -16,6 +16,8 @@ class Item < ActiveRecord::Base
   has_many :monthlyinvs, :through => :monthlyinvitems
   has_many :monthlysitems
   has_many :monthlysites, :through => :monthlysitems, :source=> "site"
+  has_many :itemallergens
+  has_many :allergens, :through => :itemallergens
 
   validates_presence_of :itemtype
   validates_uniqueness_of :name

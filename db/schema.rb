@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131213182845) do
+ActiveRecord::Schema.define(:version => 20131213202001) do
 
   create_table "allergens", :force => true do |t|
     t.string   "name"
@@ -178,6 +178,13 @@ ActiveRecord::Schema.define(:version => 20131213182845) do
   end
 
   add_index "goldberg_users", ["role_id"], :name => "fk_user_role_id"
+
+  create_table "itemallergens", :force => true do |t|
+    t.integer  "item_id"
+    t.integer  "allergen_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "itemlocs", :force => true do |t|
     t.integer  "storeloc_id"
@@ -348,6 +355,13 @@ ActiveRecord::Schema.define(:version => 20131213182845) do
     t.integer  "site_id"
     t.string   "name"
     t.integer  "number"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "studentallergens", :force => true do |t|
+    t.integer  "student_id"
+    t.integer  "allergen_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
