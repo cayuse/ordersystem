@@ -8,6 +8,7 @@
       <th class="GradeA">Factor</th>
       <th class="GradeA">Meal Equiv</th>
       <th class="GradeA">File</th>
+      <th style="display:none;"></th>
       <% if Goldberg.user.administrator? %>
       <th class="GradeA">Edit</th>
       <th class="GradeA">DELETE?</th>
@@ -22,6 +23,7 @@
     <td><%=h nutritional.servings %></td>
     <td><%=h nutritional.factor %></td>
     <td><%=h nutritional.mealequiv %></td>
+    <td style="display:none;"><%= nutritional.search %></td>
     <td><%= link_to "View Document", nutritional.attachment.url %>
     <% if Goldberg.user.administrator? %>
     <td><%= link_to 'Edit', edit_nutritional_path(nutritional) %></td>

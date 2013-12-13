@@ -77,8 +77,7 @@ class AllergensController < ApplicationController
   def update_order
     new_index = params[:index]
     new_index.each_with_index{|entry,i| Allergen.update_all(["sort = ?", i], ["id = ?", entry])}
-    @items = Allergen.all :order => :sort
-    render :action => "index"
+    redirect_to allergens_url
   end
   
   
